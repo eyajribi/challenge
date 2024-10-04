@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP: CRUD html,css,js</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" >
+</head>
+<body>
+    <h1>Liste des livres</h1>
+    <button class="btn btn-primary" onclick="ajouterLivre()">Ajouter un livre</button><br><br>
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Prix</th>
+        <th>Editer</th>
+        <th>Supprimer</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+    <form>
+        <label for="text">Titre</label>
+        <input type="text" id="titre"><br><br>
+        <label for="text">Auteur</label>
+        <input type="text" id="auteur"><br><br>
+        <label for="number">Prix</label>
+        <input type="number" id="prix"><br><br>
+        <input type="hidden" id="index">
+    </form>
+    <script>
+        var books = [
+            { titre: "Atomic Habits", auteur: "James Clear", prix: 35 },
+            { titre: "Rich Dad Poor Dad", auteur: "Robert T. Kiyosaki", prix: 40 },
+        ];
+
+        function afficherLivres() {
+            let table = document.getElementsByTagName('tbody')[0];
+            table.innerHTML = ""; 
+
+            for (let i = 0; i < books.length; i++) {
+                let row = `
+                <tr>
+                    <td>${books[i].titre}</td>
+                    <td>${books[i].auteur}</td>
+                    <td>${books[i].prix}</td>
+                    <td><button class="btn btn-warning" onclick="editer(${i})">Editer</button></td>
+                    <td><button class="btn btn-danger" onclick="supprimer(${i})">Supprimer</button></td>
+                </tr>`;
+                table.innerHTML += row;
+            }
+        }
+        afficherLivres();
+
+        function ajouterLivre() {
+            let ntitre = document.getElementById('titre').value;
+            let nauteur = document.getElementById('auteur').value;
+            let nprix = document.getElementById('prix').value;
+            let index = document.getElementById('index').value;
+
+            if (index) {
+                books[index] = { titre: ntitre, auteur: nauteur, prix: nprix };
+                document.getElementById('index').value = ""; 
+            } else {
+                books.push({ titre: ntitre, auteur: nauteur, prix: nprix });
+            }
+
+            afficherLivres();
+        }
+        function editer(index)
+        {
+            document.getElementById('titre').value = books[index].titre;
+            document.getElementById('auteur').value = books[index].auteur;
+            document.getElementById('prix').value = books[index].prix;
+            document.getElementById('index').value = index; 
+        }
+
+        function supprimer(index) {
+            var test=confirm("voulez vous supprimer ce livre?");
+            if(test==1)
+        {
+            books.splice(index, 1); 
+            afficherLivres(); 
+        }
+        }
+    </script>
+</body>
+</html>
